@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter_anime_demo/screens/landing_screen.dart';
 import 'package:flutter_anime_demo/utils/constants.dart';
 
 void main() {
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
         textTheme: screenWidth < 500 ? TEXT_THEME_SMALL : TEXT_THEME_DEFAULT,
         // TODO: Add font here
       ),
-      home: LandingPage(),
+      home: LandingScreen(),
     );
   }
 }
