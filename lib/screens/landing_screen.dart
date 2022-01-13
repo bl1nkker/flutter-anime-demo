@@ -115,15 +115,21 @@ class AnimeItem extends StatelessWidget {
         tag: tag,
         child: GestureDetector(
           onTap: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => DetailsScreen()));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => DetailsScreen(
+                          itemData: itemData,
+                        )));
           },
           child: Container(
+            // TODO: Change content padding value to constant
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
             margin: const EdgeInsets.only(bottom: 30.0),
             height: 250,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(25.0),
+                // TODO: Work with colors
                 color: Colors.greenAccent,
                 image: DecorationImage(
                     image: AssetImage(
@@ -140,6 +146,7 @@ class AnimeItem extends StatelessWidget {
                   top: 0,
                   right: 0,
                   child: BorderBox(
+                    // TODO: Work with colors
                     child: Icon(Icons.bookmark_add, color: COLOR_BLACK),
                     width: 50,
                     height: 50,
@@ -150,6 +157,7 @@ class AnimeItem extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Container(
+                      // TODO: Work with colors
                       color: COLOR_GREY,
                       padding: const EdgeInsets.symmetric(horizontal: 5),
                       child: Text('Some anime name',
@@ -159,6 +167,7 @@ class AnimeItem extends StatelessWidget {
                       height: 5.0,
                     ),
                     Container(
+                      // TODO: Work with colors
                       color: COLOR_BLACK,
                       padding: const EdgeInsets.symmetric(horizontal: 5),
                       child: Text('Some anime name',
@@ -188,6 +197,7 @@ class ChoiceOption extends StatelessWidget {
           text,
           style: themeData.textTheme.headline5,
         ),
+        // TODO: Work with colors
         backgroundColor: COLOR_GREY.withAlpha(25),
       ),
     );
