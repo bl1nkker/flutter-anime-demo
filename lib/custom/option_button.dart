@@ -13,7 +13,7 @@ class OptionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+      padding: EdgeInsets.symmetric(vertical: 10.0),
       width: width,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(50), color: COLOR_DARK_BLUE),
@@ -21,6 +21,7 @@ class OptionButton extends StatelessWidget {
         onTap: () {},
         splashColor: COLOR_WHITE.withAlpha(55),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(icon, color: COLOR_WHITE),
             addHorizontalSpace(10),

@@ -8,17 +8,23 @@ const COLOR_DARK_BLUE = Color.fromRGBO(20, 25, 45, 1.0);
 
 const TextTheme TEXT_THEME_DEFAULT = TextTheme(
     headline1: TextStyle(
-        color: COLOR_BLACK, fontWeight: FontWeight.w700, fontSize: 26),
+      color: COLOR_WHITE,
+      fontWeight: FontWeight.w700,
+      fontSize: 26,
+    ),
     headline2: TextStyle(
-        color: COLOR_BLACK, fontWeight: FontWeight.w700, fontSize: 22),
+      color: COLOR_BLACK,
+      fontWeight: FontWeight.w700,
+      fontSize: 22,
+    ),
     headline3: TextStyle(
-        color: COLOR_BLACK, fontWeight: FontWeight.w700, fontSize: 20),
+        color: COLOR_WHITE, fontWeight: FontWeight.w700, fontSize: 20),
     headline4: TextStyle(
-        color: COLOR_BLACK, fontWeight: FontWeight.w700, fontSize: 16),
+        color: COLOR_WHITE, fontWeight: FontWeight.w700, fontSize: 16),
     headline5: TextStyle(
         color: COLOR_BLACK, fontWeight: FontWeight.w700, fontSize: 14),
     headline6: TextStyle(
-        color: COLOR_BLACK, fontWeight: FontWeight.w700, fontSize: 12),
+        color: COLOR_WHITE, fontWeight: FontWeight.w700, fontSize: 12),
     bodyText1: TextStyle(
         color: COLOR_BLACK,
         fontSize: 14,

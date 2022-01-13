@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_anime_demo/custom/border_box.dart';
 import 'package:flutter_anime_demo/custom/option_button.dart';
 import 'package:flutter_anime_demo/data/sample_data.dart';
+import 'package:flutter_anime_demo/screens/details_screen.dart';
 import 'package:flutter_anime_demo/utils/constants.dart';
 import 'package:flutter_anime_demo/utils/custom_functions.dart';
 import 'package:flutter_anime_demo/utils/widget_functions.dart';
@@ -51,7 +52,7 @@ class LandingScreen extends StatelessWidget {
                       Padding(
                         padding: sidePadding,
                         child: Text('San Francisco',
-                            style: themeData.textTheme.headline1),
+                            style: themeData.textTheme.headline2),
                       ),
                       addVerticalSpace(10),
                       SingleChildScrollView(
@@ -79,6 +80,7 @@ class LandingScreen extends StatelessWidget {
                               itemBuilder: (context, index) {
                                 return AnimeItem(
                                   itemData: RE_DATA[index],
+                                  tag: RE_DATA[index]['address'] as String,
                                 );
                               }),
                         ),
@@ -90,8 +92,8 @@ class LandingScreen extends StatelessWidget {
                       width: size.width,
                       child: Center(
                         child: OptionButton(
-                            icon: Icons.map_rounded,
-                            text: 'Map View',
+                            icon: Icons.bookmark,
+                            text: 'Bookmarked',
                             width: size.width * 0.35),
                       ))
                 ],
@@ -102,54 +104,72 @@ class LandingScreen extends StatelessWidget {
 
 class AnimeItem extends StatelessWidget {
   final dynamic itemData;
-  const AnimeItem({Key? key, required this.itemData}) : super(key: key);
+  final String tag;
+  const AnimeItem({Key? key, required this.itemData, required this.tag})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Stack(
-            children: [
-              ClipRRect(
-                  borderRadius: BorderRadius.circular(25.0),
-                  child: Image.asset(
-                    itemData['image'],
-                    width: 300,
-                  )),
-              const Positioned(
-                top: 15,
-                right: 15,
-                child: BorderBox(
-                  child: Icon(Icons.favorite_border, color: COLOR_BLACK),
-                  width: 50,
-                  height: 50,
+    return Hero(
+        tag: tag,
+        child: GestureDetector(
+          onTap: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => DetailsScreen()));
+          },
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            margin: const EdgeInsets.only(bottom: 30.0),
+            height: 250,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(25.0),
+                color: Colors.greenAccent,
+                image: DecorationImage(
+                    image: AssetImage(
+                      itemData['image'],
+                    ),
+                    fit: BoxFit.cover),
+                boxShadow: const [
+                  BoxShadow(
+                      color: Colors.grey, blurRadius: 10, offset: Offset(0, 5))
+                ]),
+            child: Stack(
+              children: [
+                const Positioned(
+                  top: 0,
+                  right: 0,
+                  child: BorderBox(
+                    child: Icon(Icons.bookmark_add, color: COLOR_BLACK),
+                    width: 50,
+                    height: 50,
+                  ),
                 ),
-              ),
-            ],
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Container(
+                      color: COLOR_GREY,
+                      padding: const EdgeInsets.symmetric(horizontal: 5),
+                      child: Text('Some anime name',
+                          style: themeData.textTheme.headline1),
+                    ),
+                    const SizedBox(
+                      height: 5.0,
+                    ),
+                    Container(
+                      color: COLOR_BLACK,
+                      padding: const EdgeInsets.symmetric(horizontal: 5),
+                      child: Text('Some anime name',
+                          style: themeData.textTheme.headline6),
+                    ),
+                  ],
+                )
+              ],
+            ),
           ),
-          addVerticalSpace(15),
-          Row(
-            children: [
-              Text(
-                formatCurrency(itemData['amount']),
-                style: themeData.textTheme.headline1,
-              ),
-              addHorizontalSpace(10),
-              Text('${itemData['address']}',
-                  style: themeData.textTheme.bodyText2)
-            ],
-          ),
-          addVerticalSpace(10),
-          Text(
-              '${itemData['bedrooms']} bedrooms / ${itemData['bathrooms']} bathrooms',
-              style: themeData.textTheme.headline5)
-        ],
-      ),
-    );
+        ));
   }
 }
 
