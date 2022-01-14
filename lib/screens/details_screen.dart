@@ -11,14 +11,20 @@ class DetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final PanelController panelController = PanelController();
     final ThemeData themeData = Theme.of(context);
     return SafeArea(
       child: SlidingUpPanel(
+        controller: panelController,
         // backdropColor: Colors.red.withAlpha(1),
-        color: Colors.white.withOpacity(.1),
+        color: Colors.transparent,
         minHeight: 200,
-        panelBuilder: (controller) =>
-            DetailsPanelWidget(controller: controller),
+        // maxHeight: 300,
+        parallaxEnabled: true,
+        parallaxOffset: .1,
+
+        panelBuilder: (controller) => DetailsPanelWidget(
+            controller: controller, panelController: panelController),
         body: Container(
             // TODO: Change content padding value to constant
 
