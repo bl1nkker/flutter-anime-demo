@@ -4,6 +4,7 @@ import 'package:flutter_anime_demo/screens/landing_screen.dart';
 import 'package:flutter_anime_demo/utils/constants.dart';
 
 void main() {
+  // TODO: Connect to FireBase
   runApp(const MyApp());
 }
 
