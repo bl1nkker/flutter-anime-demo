@@ -6,9 +6,47 @@ import 'package:flutter_anime_demo/screens/details_screen.dart';
 import 'package:flutter_anime_demo/utils/constants.dart';
 import 'package:flutter_anime_demo/utils/custom_functions.dart';
 import 'package:flutter_anime_demo/utils/widget_functions.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class LandingScreen extends StatelessWidget {
+class LandingScreen extends StatefulWidget {
   const LandingScreen({Key? key}) : super(key: key);
+
+  @override
+  State<LandingScreen> createState() => _LandingScreenState();
+}
+
+class _LandingScreenState extends State<LandingScreen> {
+  List<String> _bookmarkedAnime = [];
+  SharedPreferences? _preferences;
+  @override
+  void initState() {
+    super.initState();
+    _readSharedPreferences();
+  }
+
+  void _readSharedPreferences() async {
+    _preferences = await SharedPreferences.getInstance();
+    if (_preferences!.getStringList('bookmarks') != null) {
+      setState(() {
+        _bookmarkedAnime = _preferences!.getStringList('bookmarks')!;
+      });
+    }
+  }
+
+  void _addBookmark(animeId) {
+    setState(() {
+      _bookmarkedAnime.add(animeId.toString());
+    });
+    print('Added $_bookmarkedAnime');
+    _preferences!.setStringList('bookmarks', _bookmarkedAnime);
+  }
+
+  void _removeBookmark(animeId) {
+    setState(() {
+      _bookmarkedAnime.removeWhere((id) => id == animeId.toString());
+    });
+    _preferences!.setStringList('bookmarks', _bookmarkedAnime);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +54,7 @@ class LandingScreen extends StatelessWidget {
     final ThemeData themeData = Theme.of(context);
     final double padding = 25.0;
     final EdgeInsets sidePadding = EdgeInsets.symmetric(horizontal: padding);
+
     return SafeArea(
       child: Scaffold(
           body: SizedBox(
@@ -31,12 +70,14 @@ class LandingScreen extends StatelessWidget {
                         padding: sidePadding,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: const [
+                          children: [
                             BorderBox(
+                                onTap: () {},
                                 child: Icon(Icons.menu, color: COLOR_BLACK),
                                 width: 50,
                                 height: 50),
                             BorderBox(
+                                onTap: () {},
                                 child: Icon(Icons.settings, color: COLOR_BLACK),
                                 width: 50,
                                 height: 50),
@@ -56,7 +97,7 @@ class LandingScreen extends StatelessWidget {
                       ),
                       addVerticalSpace(10),
                       SingleChildScrollView(
-                        physics: BouncingScrollPhysics(),
+                        physics: const BouncingScrollPhysics(),
                         scrollDirection: Axis.horizontal,
                         child: Row(
                           children: const [
@@ -75,13 +116,111 @@ class LandingScreen extends StatelessWidget {
                         child: Padding(
                           padding: sidePadding,
                           child: ListView.builder(
-                              physics: BouncingScrollPhysics(),
+                              physics: const BouncingScrollPhysics(),
                               itemCount: RE_DATA.length,
                               itemBuilder: (context, index) {
-                                return AnimeItem(
-                                  itemData: RE_DATA[index],
-                                  tag: RE_DATA[index]['address'] as String,
-                                );
+                                final Widget bookmarkIcon = _bookmarkedAnime
+                                            .indexWhere((id) =>
+                                                id ==
+                                                RE_DATA[index]['id']
+                                                    .toString()) !=
+                                        -1
+                                    ? BorderBox(
+                                        onTap: () => _removeBookmark(
+                                            RE_DATA[index]['id']),
+                                        color: COLOR_BLACK,
+                                        // TODO: Work with colors
+                                        child: const Icon(Icons.bookmark,
+                                            color: COLOR_WHITE),
+                                        width: 50,
+                                        height: 50,
+                                      )
+                                    : BorderBox(
+                                        onTap: () =>
+                                            _addBookmark(RE_DATA[index]['id']),
+                                        // TODO: Work with colors
+                                        child: const Icon(
+                                            Icons.bookmark_add_outlined,
+                                            color: COLOR_BLACK),
+                                        width: 50,
+                                        height: 50,
+                                      );
+
+                                return Hero(
+                                    tag: RE_DATA[index]['id'].toString(),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    DetailsScreen(
+                                                      itemData: RE_DATA[index],
+                                                    )));
+                                      },
+                                      child: Container(
+                                        // TODO: Change content padding value to constant
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 20, vertical: 20),
+                                        margin:
+                                            const EdgeInsets.only(bottom: 30.0),
+                                        height: 250,
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(25.0),
+                                            // TODO: Work with colors
+                                            color: Colors.greenAccent,
+                                            image: DecorationImage(
+                                                image: AssetImage(
+                                                  RE_DATA[index]['image']
+                                                      as String,
+                                                ),
+                                                fit: BoxFit.cover),
+                                            boxShadow: const [
+                                              BoxShadow(
+                                                  color: Colors.grey,
+                                                  blurRadius: 10,
+                                                  offset: Offset(0, 5))
+                                            ]),
+                                        child: Stack(
+                                          children: [
+                                            Positioned(
+                                                top: 0,
+                                                right: 0,
+                                                child: bookmarkIcon),
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end,
+                                              children: [
+                                                Container(
+                                                  // TODO: Work with colors
+                                                  color: COLOR_GREY,
+                                                  padding: const EdgeInsets
+                                                      .symmetric(horizontal: 5),
+                                                  child: Text('Some anime name',
+                                                      style: themeData
+                                                          .textTheme.headline1),
+                                                ),
+                                                const SizedBox(
+                                                  height: 5.0,
+                                                ),
+                                                Container(
+                                                  // TODO: Work with colors
+                                                  color: COLOR_BLACK,
+                                                  padding: const EdgeInsets
+                                                      .symmetric(horizontal: 5),
+                                                  child: Text('Some anime name',
+                                                      style: themeData
+                                                          .textTheme.headline6),
+                                                ),
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ));
                               }),
                         ),
                       )
@@ -99,86 +238,6 @@ class LandingScreen extends StatelessWidget {
                 ],
               ))),
     );
-  }
-}
-
-class AnimeItem extends StatelessWidget {
-  final dynamic itemData;
-  final String tag;
-  const AnimeItem({Key? key, required this.itemData, required this.tag})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final ThemeData themeData = Theme.of(context);
-    return Hero(
-        tag: tag,
-        child: GestureDetector(
-          onTap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => DetailsScreen(
-                          itemData: itemData,
-                        )));
-          },
-          child: Container(
-            // TODO: Change content padding value to constant
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-            margin: const EdgeInsets.only(bottom: 30.0),
-            height: 250,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(25.0),
-                // TODO: Work with colors
-                color: Colors.greenAccent,
-                image: DecorationImage(
-                    image: AssetImage(
-                      itemData['image'],
-                    ),
-                    fit: BoxFit.cover),
-                boxShadow: const [
-                  BoxShadow(
-                      color: Colors.grey, blurRadius: 10, offset: Offset(0, 5))
-                ]),
-            child: Stack(
-              children: [
-                const Positioned(
-                  top: 0,
-                  right: 0,
-                  child: BorderBox(
-                    // TODO: Work with colors
-                    child: Icon(Icons.bookmark_add, color: COLOR_BLACK),
-                    width: 50,
-                    height: 50,
-                  ),
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Container(
-                      // TODO: Work with colors
-                      color: COLOR_GREY,
-                      padding: const EdgeInsets.symmetric(horizontal: 5),
-                      child: Text('Some anime name',
-                          style: themeData.textTheme.headline1),
-                    ),
-                    const SizedBox(
-                      height: 5.0,
-                    ),
-                    Container(
-                      // TODO: Work with colors
-                      color: COLOR_BLACK,
-                      padding: const EdgeInsets.symmetric(horizontal: 5),
-                      child: Text('Some anime name',
-                          style: themeData.textTheme.headline6),
-                    ),
-                  ],
-                )
-              ],
-            ),
-          ),
-        ));
   }
 }
 

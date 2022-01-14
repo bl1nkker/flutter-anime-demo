@@ -60,7 +60,8 @@ class DetailsScreen extends StatelessWidget {
                               color: COLOR_WHITE),
                         ),
                       ),
-                      const BorderBox(
+                      BorderBox(
+                        onTap: () {},
                         // TODO: Work with colors
                         child: Icon(Icons.bookmark_add, color: COLOR_BLACK),
                         width: 50,

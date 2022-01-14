@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_anime_demo/utils/constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class DetailsPanelWidget extends StatelessWidget {
