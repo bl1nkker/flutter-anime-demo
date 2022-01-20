@@ -9,6 +9,10 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LandingScreen extends StatefulWidget {
+  static MaterialPage page() {
+    return MaterialPage(child: LandingScreen());
+  }
+
   const LandingScreen({Key? key}) : super(key: key);
 
   @override

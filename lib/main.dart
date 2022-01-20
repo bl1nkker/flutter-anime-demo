@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter_anime_demo/navigation/app_router.dart';
 import 'package:flutter_anime_demo/provider/app_state_manager.dart';
 import 'package:flutter_anime_demo/screens/landing_screen.dart';
 import 'package:flutter_anime_demo/utils/constants.dart';
@@ -20,6 +21,16 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   final AppStateManager _appStateManager = AppStateManager();
+  late AppRouter _appRouter;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _appRouter = AppRouter(
+      appStateManager: _appStateManager,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     // Get screen width of our device
@@ -36,7 +47,10 @@ class _MyAppState extends State<MyApp> {
           textTheme: screenWidth < 500 ? TEXT_THEME_SMALL : TEXT_THEME_DEFAULT,
           // TODO: Add font here
         ),
-        home: LandingScreen(),
+        home: Router(
+          backButtonDispatcher: RootBackButtonDispatcher(),
+          routerDelegate: _appRouter,
+        ),
       ),
     );
   }

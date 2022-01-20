@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_anime_demo/data/sample_data.dart';
 import 'package:flutter_anime_demo/models/anime_model.dart';
 
 class AppStateManager extends ChangeNotifier {
@@ -12,8 +13,15 @@ class AppStateManager extends ChangeNotifier {
 
   void getAnimeItems() {
     // TODO: Retrieve data here
-    _animeItems = [];
-    print('Retrieving data...');
+    for (dynamic obj in RE_DATA) {
+      AnimeModel animeModel = AnimeModel(
+          id: obj['id'].toString(),
+          imageUrl: obj['image'],
+          overview: obj['description'],
+          rating: 4.5,
+          title: 'Hello World');
+      _animeItems.add(animeModel);
+    }
     notifyListeners();
   }
 

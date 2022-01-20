@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_anime_demo/models/anime_model.dart';
 import 'package:flutter_anime_demo/utils/constants.dart';
 import 'package:flutter_anime_demo/widgets/border_box.dart';
 import 'package:flutter_anime_demo/widgets/details_panel_widget.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class DetailsScreen extends StatelessWidget {
-  final dynamic itemData;
+  static MaterialPage page({required AnimeModel anime, int index = -1}) {
+    return MaterialPage(child: DetailsScreen(itemData: anime));
+  }
+
+  final AnimeModel itemData;
 
   const DetailsScreen({Key? key, required this.itemData}) : super(key: key);
 
@@ -35,7 +40,7 @@ class DetailsScreen extends StatelessWidget {
                 color: Colors.greenAccent,
                 image: DecorationImage(
                     image: AssetImage(
-                      itemData['image'],
+                      itemData.imageUrl,
                     ),
                     // alignment: Alignment(-.7, 0),
                     fit: BoxFit.cover),
@@ -71,44 +76,6 @@ class DetailsScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                  // ClipRRect(
-                  //   // borderRadius: BorderRadius.circular(30),
-                  //   child: Container(
-                  //     height: MediaQuery.of(context).size.height * .3,
-                  //     padding:
-                  //         EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
-                  //     decoration: BoxDecoration(
-                  //         gradient:
-                  //             LinearGradient(begin: Alignment.bottomRight, colors: [
-                  //       Colors.black.withOpacity(1),
-                  //       // Colors.black.withOpacity(.3),
-                  //       Colors.black.withOpacity(.6),
-                  //     ])),
-                  //     child: Column(
-                  //         crossAxisAlignment: CrossAxisAlignment.start,
-                  //         children: [
-                  //           Row(
-                  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //             children: [
-                  //               Text(
-                  //                 'Hello world',
-                  //                 style: themeData.textTheme.headline3,
-                  //               ),
-                  //               Text(
-                  //                 'Rating Bar',
-                  //                 style: themeData.textTheme.headline3,
-                  //               )
-                  //             ],
-                  //           ),
-                  //           const SizedBox(
-                  //             height: 10.0,
-                  //           ),
-                  //           Text(
-                  //               'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
-                  //               style: themeData.textTheme.bodyText2),
-                  //         ]),
-                  //   ),
-                  // )
                 ],
               )),
         ),
