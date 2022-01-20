@@ -1,30 +1,43 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter_anime_demo/provider/app_state_manager.dart';
 import 'package:flutter_anime_demo/screens/landing_screen.dart';
 import 'package:flutter_anime_demo/utils/constants.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart' as DotEnv;
+import 'package:provider/provider.dart';
 
-void main() {
-  // TODO: Connect to FireBase
+void main() async {
+  await DotEnv.dotenv.load(fileName: '.env');
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  final AppStateManager _appStateManager = AppStateManager();
   @override
   Widget build(BuildContext context) {
     // Get screen width of our device
     double screenWidth = window.physicalSize.width;
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primaryColor: COLOR_WHITE,
-        accentColor: COLOR_DARK_BLUE,
-        textTheme: screenWidth < 500 ? TEXT_THEME_SMALL : TEXT_THEME_DEFAULT,
-        // TODO: Add font here
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => _appStateManager)
+      ],
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primaryColor: COLOR_WHITE,
+          accentColor: COLOR_DARK_BLUE,
+          textTheme: screenWidth < 500 ? TEXT_THEME_SMALL : TEXT_THEME_DEFAULT,
+          // TODO: Add font here
+        ),
+        home: LandingScreen(),
       ),
-      home: LandingScreen(),
     );
   }
 }

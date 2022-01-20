@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_anime_demo/custom/border_box.dart';
 import 'package:flutter_anime_demo/utils/constants.dart';
+import 'package:flutter_anime_demo/widgets/border_box.dart';
 import 'package:flutter_anime_demo/widgets/details_panel_widget.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
